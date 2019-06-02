@@ -1,0 +1,14 @@
+code_bucket          = "awscodelab-codepipeline-bucket"
+linux_code_key       = "aws-codepipeline-s3-aws-codedeploy_linux.zip"
+linux_code_source    = "aws-codepipeline-s3-aws-codedeploy_linux.zip"
+instance_name_prefix = "awscodelab-amzn-linux-"
+vpc_name = "awscodelab-vpc"
+az_list = ["us-west-2a", "us-west-2b"]
+vpc_cidr = "10.0.0.0/16"
+private_subnets = ["10.0.20.0/24", "10.0.21.0/24"]
+public_subnets = ["10.0.10.0/24", "10.0.11.0/24"]
+iam_prefix = "awscodelab-"
+iam_role_path = "/"
+ssh_scg_name = "awscodelab-ssh-inbound"
+ssh_ingress_cidr = ["68.35.175.60/32"]
+environment = "dev"
