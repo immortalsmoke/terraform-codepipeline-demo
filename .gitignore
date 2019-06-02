@@ -1,0 +1,18 @@
+#  Local .terraform directories
+**/.terraform
+
+# .tfstate files
+**/*.tfstate
+**/*.tfstate.*
+
+# Ignore any secret.tfvars files because they contain sensitive data
+**/secret.tfvars
+**/secret.auto.tfvars
+
+# Ignore files ending in secret.json because the contain sensitive data
+**/*secret.json
+
+# SSH keys
+**/*.pem
+**/*.ppk
+
