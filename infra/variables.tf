@@ -20,3 +20,4 @@ variable ssh_ingress_cidr {
 variable vpc_cidr {}
 variable environment {}
 variable instance_name_prefix {}
+

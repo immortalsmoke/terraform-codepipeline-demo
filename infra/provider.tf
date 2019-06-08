@@ -7,7 +7,7 @@ provider "aws" {
 terraform {
   backend "s3" {
     bucket = "awscodelab-tfstate-001" 
-    key    = "terraform.tfstate"
+    key    = "infra.tfstate"
     region = "us-west-2"
     profile = "test-aws"
   }

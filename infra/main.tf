@@ -6,6 +6,7 @@
 resource "aws_s3_bucket" "code_bucket" {
   bucket = "${var.code_bucket}"
   acl    = "private"
+  force_destroy = true
 
   versioning {
     enabled = true
@@ -50,22 +51,6 @@ module "dev_vpc" {
 # EC2 Instance-Adjacent Resources
 #####
 
-data "aws_ami" "amzn" {
-	most_recent = "true"
-
-	filter {
-		name = "name"
-		values = ["amzn-ami-hvm-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["amazon"]
-}
-
 resource "aws_iam_role" "awscodelab" {
   name = "${var.iam_prefix}role"
   path = "${var.iam_role_path}"
@@ -107,38 +92,15 @@ resource "aws_security_group" "ssh_in" {
 }
 
 
-resource "tls_private_key" "awscodelab-keys" {
+resource "tls_private_key" "awscodelab" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "awscodelab-key-pair" {
-  key_name   = "ansible-test-key-pair"
-  public_key = "${tls_private_key.awscodelab-keys.public_key_openssh}"
+resource "aws_key_pair" "awscodelab" {
+  key_name   = "awscodelab-key-pair"
+  public_key = "${tls_private_key.awscodelab.public_key_openssh}"
 }
 
 
-
-
-#####
-# EC2 Instances
-#####
-
-resource "aws_instance" "linux_test" {
-  ami           = "${data.aws_ami.amzn.id}"
-  instance_type = "t3.micro"
-  associate_public_ip_address = true
-  iam_instance_profile = "${aws_iam_instance_profile.awscodelab.id}"
-	user_data     = "${file("userdata/linux.sh")}"
-  subnet_id     = "${module.dev_vpc.public_subnets[0]}"
-  vpc_security_group_ids = ["${aws_security_group.ssh_in.id}"]
-  key_name     = "${aws_key_pair.awscodelab-key-pair.key_name}"
-	count         = 2
-
-
-	tags {
-	  Name = "${format("%s%03d", "${var.instance_name_prefix}", count.index + 1)}"
-		env  = "${var.environment}"
-	}
-}
 
